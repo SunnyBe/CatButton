@@ -1,0 +1,3 @@
+include ':buttoner'
+include ':app'
+rootProject.name = "Buttoned"
