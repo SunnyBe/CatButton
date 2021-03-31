@@ -5,6 +5,7 @@ import com.buchi.buttoned.authentication.model.User
 import com.buchi.buttoned.authentication.presentation.login.LoginViewState
 import com.buchi.buttoned.authentication.presentation.signup.SignupViewState
 import com.buchi.buttoned.authentication.utils.ResultState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -62,5 +63,11 @@ class AuthRepositoryImpl @Inject constructor(
             .catch { cause ->
                 emit(ResultState.error("System error occurred", cause))
             }
+    }
+
+    override fun deleteUser(user: User): Flow<Unit> {
+        return flow {
+            emit(cache.userDao().delete(user))
+        }.flowOn(IO)
     }
 }

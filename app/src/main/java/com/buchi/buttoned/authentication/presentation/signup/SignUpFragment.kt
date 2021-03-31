@@ -68,6 +68,12 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        binding.proceedToLoginAction.setOnClickListener {
+            val action =
+                SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
+            Navigation.findNavController(view).navigate(action)
+        }
+
         lifecycleScope.launchWhenStarted {
             viewModel.dataState.mapLatest { ds ->
                 authViewModel.dataStateChanged(ds)

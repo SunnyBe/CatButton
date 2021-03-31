@@ -5,25 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.buchi.buttoned.MainActivity
 import com.buchi.buttoned.authentication.extensions.isValidPassword
 import com.buchi.buttoned.authentication.extensions.isValidUserName
-import com.buchi.buttoned.authentication.model.User
 import com.buchi.buttoned.authentication.presentation.AuthViewModel
 import com.buchi.buttoned.databinding.FragmentLoginBinding
+import com.buchi.buttoned.main.MainActivity
+import com.buchi.buttoned.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -33,8 +29,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     // Shared auth viewModel for auth processes
     private val authViewModel: AuthViewModel by activityViewModels { viewModelFactory }
     private val viewModel: LoginViewModel by viewModels { viewModelFactory }
@@ -65,7 +63,7 @@ class LoginFragment : Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.dataState.mapLatest { ds->
+            viewModel.dataState.mapLatest { ds ->
                 authViewModel.dataStateChanged(ds)
 
                 ds.data?.let { event ->
@@ -75,9 +73,12 @@ class LoginFragment : Fragment() {
                 }
             }.launchIn(lifecycleScope)
 
-            viewModel.viewState.collectLatest { vs->
-                vs.user?.let {
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+            viewModel.viewState.collectLatest { vs ->
+                vs.user?.let { user ->
+                    val mainIntent = Intent(requireActivity(), MainActivity::class.java)
+                    mainIntent.putExtra(Constants.KeyPairs.LOGGED_IN_USER, user)
+                    requireActivity().startActivity(mainIntent)
+                    requireActivity().finishAffinity()
                 }
             }
         }

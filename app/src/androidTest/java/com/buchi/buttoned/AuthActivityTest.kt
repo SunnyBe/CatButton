@@ -1,13 +1,10 @@
 package com.buchi.buttoned
 
-import android.content.Intent
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
@@ -20,6 +17,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.buchi.buttoned.authentication.presentation.AuthActivity
 import com.buchi.buttoned.authentication.presentation.login.LoginFragment
 import com.buchi.buttoned.authentication.presentation.signup.SignUpFragment
+import com.buchi.buttoned.main.MainActivity
 import com.buchi.buttoned.utils.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -101,8 +99,8 @@ class AuthActivityTest {
         }
 
         // Enter test full name
-        onView(withId(R.id.login_username_entry)).perform(typeText("tMuller"))
-        onView(withId(R.id.login_password_entry)).perform(typeText("password123"))
+        onView(withId(R.id.login_username_entry)).perform(typeText("tMuller"), closeSoftKeyboard())
+        onView(withId(R.id.login_password_entry)).perform(typeText("password123"), closeSoftKeyboard())
         // Perform click on submit button
         onView(withId(R.id.login_action)).perform(click())
 
@@ -121,11 +119,27 @@ class AuthActivityTest {
         }
 
         // Enter test full name
-        onView(withId(R.id.fullname_entry)).perform(typeText("Thomas Muller"))
-        onView(withId(R.id.username_entry)).perform(typeText("tMuller"))
-        onView(withId(R.id.password_entry)).perform(typeText("password123"))
+        onView(withId(R.id.fullname_entry)).perform(typeText("Thomas Muller"), closeSoftKeyboard())
+        onView(withId(R.id.username_entry)).perform(typeText("tMuller"), closeSoftKeyboard())
+        onView(withId(R.id.password_entry)).perform(typeText("password123"), closeSoftKeyboard())
         // Perform click on submit button
         onView(withId(R.id.register_action)).perform(click())
+
+        // Assert navigation was done to signIn page
+        assert(navController.currentDestination?.id == R.id.loginFragment)
+    }
+
+    @Test
+    fun testSignUpFragment_confirmNavigationToLoginScreen() {
+        // make auth nav host controller
+        val navController: TestNavHostController = testAuthNavHostController()
+        launchFragmentInHiltContainer<SignUpFragment> {
+            view?.let { v->
+                Navigation.setViewNavController(v, navController)
+            }
+        }
+        // Perform click on submit button
+        onView(withId(R.id.proceed_to_login_action)).perform(click())
 
         // Assert navigation was done to signIn page
         assert(navController.currentDestination?.id == R.id.loginFragment)
