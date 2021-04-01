@@ -84,6 +84,9 @@ dependencies {
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'

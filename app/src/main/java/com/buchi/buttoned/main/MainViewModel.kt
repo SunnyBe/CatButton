@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val authRepo: AuthRepository,
-//    val mainRepo: MainRepository
 ) : ViewModel() {
 
     fun sessionProcess(
@@ -36,7 +35,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout(user: User, action: (User?) -> Unit) {
-        authRepo.deleteUser(user)
+        user.inSession = false
+        authRepo.updateUser(user)
             .onCompletion {
                 action(user)
             }

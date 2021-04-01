@@ -1,17 +1,20 @@
 package com.buchi.buttoned.authentication.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.buchi.buttoned.authentication.data.repository.AuthRepository
 import com.buchi.buttoned.authentication.model.User
-import com.buchi.buttoned.authentication.presentation.login.LoginViewState
 import com.buchi.buttoned.authentication.utils.ResultState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
     private val authRepo: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _user: MutableStateFlow<User?> = MutableStateFlow(null)
     val user: StateFlow<User?> get() = _user
@@ -23,11 +26,14 @@ class AuthViewModel @Inject constructor(
     val error: StateFlow<String?> get() = _error
 
     init {
-        // Todo Fetch user and update [_user] stateFlow
-        authRepo.currentUser()
+        authRepo.currentUser().mapLatest { ds ->
+            _user.value = ds.data?.getContentIfNotHandled()?.user
+        }.launchIn(viewModelScope)
+
     }
 
     fun dataStateChanged(dataState: ResultState<*>) {
+        Log.d(javaClass.simpleName, "DataState Updated: $dataState")
         _error.value = dataState.error?.getContentIfNotHandled()?.message
         _loading.value = dataState.loading
     }

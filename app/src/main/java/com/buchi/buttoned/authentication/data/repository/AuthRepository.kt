@@ -12,4 +12,5 @@ interface AuthRepository {
     fun signUp(user: User): Flow<ResultState<SignupViewState>>
     fun idleState(): Flow<ResultState<SignupViewState>>
     fun deleteUser(user: User): Flow<Unit>
+    fun updateUser(user: User): Flow<User?>
 }

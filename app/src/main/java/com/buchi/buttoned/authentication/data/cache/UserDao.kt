@@ -1,10 +1,7 @@
 package com.buchi.buttoned.authentication.data.cache
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 import com.buchi.buttoned.authentication.model.User
 
 @Dao
@@ -22,7 +19,10 @@ interface UserDao {
     suspend fun userByUserNameAndPassword(userName: String, password: String): User?
 
     @Query("SELECT * FROM user")
-    fun users(): List<User>
+    suspend fun user(): User?
+
+    @Update(onConflict = REPLACE)
+    fun update(user: User): Int?
 
     @Delete
     fun delete(user: User)
