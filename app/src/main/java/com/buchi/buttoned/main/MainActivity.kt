@@ -12,35 +12,39 @@ import com.buchi.buttoned.authentication.presentation.AuthActivity
 import com.buchi.buttoned.databinding.ActivityMainBinding
 import com.buchi.buttoned.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
+    private val sessionScope = CoroutineScope(Job() + Dispatchers.IO)
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MainViewModel by viewModels { viewModelFactory }
+    private var loggedUser: User? = null
+    private var fGroundJob: Job? = null
+    private var bGroundJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loggedUser = intent.getParcelableExtra(Constants.KeyPairs.LOGGED_IN_USER)
+        appendUserDetailToView(loggedUser)
 
-        val user = intent.getParcelableExtra<User>(Constants.KeyPairs.LOGGED_IN_USER)
-//        val user = User("c825cae8-91f8-11eb-a8b3-0242ac130003", "Thomas Muller", "tMuller", "password123")
-        appendUserDetail(user)
+        // Start a foreground scope attached to session scope
+        fGroundJob =
+            viewModel.sessionProcess(loggedUser, sessionScope, Constants.TIMEOUT_FOREGROUND_MILLI) {
+                navigateToAuthScreen()
+            }
+
         binding.mainLogoutAction.setOnClickListener {
-            if (user != null) {
-                lifecycleScope.launchWhenStarted {
-                    viewModel.logoutUser(user)
-                        .onCompletion {
-                            val loginIntent = Intent(this@MainActivity, AuthActivity::class.java)
-                            startActivity(loginIntent)
-                            finish()
-                        }.collect()
+            if (loggedUser != null) {
+                viewModel.logout(loggedUser!!) {
+                    navigateToAuthScreen()
                 }
             } else {
                 Toast.makeText(this, "No user was found", Toast.LENGTH_SHORT).show()
@@ -49,9 +53,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun appendUserDetail(user: User?) {
+    private fun navigateToAuthScreen() {
+        val loginIntent = Intent(this@MainActivity, AuthActivity::class.java)
+        startActivity(loginIntent)
+        finish()
+    }
+
+    private fun appendUserDetailToView(user: User?) {
         user?.let {
             binding.mainWelcomeLabel.text = "Welcome ${user.fullName}"
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Only cancel foreground Job attached to active sessionScope and start a background scope
+        if (sessionScope.isActive) fGroundJob?.cancel(CancellationException("Session timeout"))
+        bGroundJob =
+            viewModel.sessionProcess(loggedUser, sessionScope, Constants.TIMEOUT_BACKGROUND_MILLI) {
+                navigateToAuthScreen()
+            }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Only cancel background Job attached to active sessionScope
+        if (sessionScope.isActive) bGroundJob?.cancel(CancellationException("Session timeout"))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cancel all jobs attach to sessionScope
+        if (sessionScope.isActive) sessionScope.cancel(CancellationException("Session timeout"))
     }
 }

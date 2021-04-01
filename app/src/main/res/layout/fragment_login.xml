@@ -28,7 +28,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_username_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:nextFocusDown="@string/password_label"
+            android:inputType="text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -37,6 +39,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/password_label"
         app:passwordToggleEnabled="true"
+        android:nextFocusDown="@id/login_action"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -47,7 +50,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.buchi.buttoner.DynamicButton
