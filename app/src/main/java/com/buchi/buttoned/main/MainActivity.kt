@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.buchi.buttoned.R
 import com.buchi.buttoned.authentication.model.User
 import com.buchi.buttoned.authentication.presentation.AuthActivity
 import com.buchi.buttoned.databinding.ActivityMainBinding
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.mainLogoutAction.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_account, null))
         loggedUser = intent.getParcelableExtra(Constants.KeyPairs.LOGGED_IN_USER)
         appendUserDetailToView(loggedUser)
 

@@ -8,12 +8,12 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/error_lottie"
-        android:layout_width="@dimen/process_square_size"
-        android:layout_height="@dimen/process_square_size"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:lottie_fileName="process_failed.json"
+        app:lottie_fileName="failed_state.json"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

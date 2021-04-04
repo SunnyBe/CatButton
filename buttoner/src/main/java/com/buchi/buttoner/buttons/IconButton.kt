@@ -1,4 +1,4 @@
-package com.buchi.buttoner
+package com.buchi.buttoner.buttons
 
 import android.content.Context
 import android.util.AttributeSet

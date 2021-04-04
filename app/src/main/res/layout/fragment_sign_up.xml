@@ -67,7 +67,7 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.buchi.buttoner.DynamicButton
+    <com.buchi.buttoner.buttons.DynamicButton
         android:id="@+id/register_action"
         android:layout_width="match_parent"
         android:layout_height="45dp"
