@@ -16,10 +16,12 @@ import com.buchi.buttoned.databinding.DialogFailedBinding
 import com.buchi.buttoned.databinding.DialogProcessingBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     lateinit var binding: ActivityAuthenticationBinding
@@ -55,7 +57,7 @@ class AuthActivity : AppCompatActivity() {
         viewModel.error.mapLatest { cause ->
             Log.d(javaClass.simpleName, "Error status: $cause")
             cause?.let {
-                alertError(cause ?: "")
+                alertError(cause)
             }
         }.launchIn(lifecycleScope)
 

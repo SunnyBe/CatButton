@@ -138,6 +138,15 @@ class CatButton @JvmOverloads constructor(
         postInvalidate()
     }
 
+    /**
+     * Sets the icon to show for this button. By default, this icon will be shown on the left side of
+     * the button.
+     *
+     * @param icon Drawable to use for the button's icon.
+     * @attr ref com.google.android.material.R.styleable#MaterialButton_icon
+     * @see .setIconResource
+     * @see .getIcon
+     */
     fun setIcon(icon: Drawable?) {
         icon?.apply {
             setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)

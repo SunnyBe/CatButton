@@ -14,7 +14,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.multibindings.IntoMap
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Module
 @InstallIn(ActivityComponent::class)
 abstract class AuthViewModelModule {
@@ -35,6 +37,7 @@ abstract class AuthViewModelModule {
     abstract fun signUpViewModel(authViewModel: SignUpViewModel): ViewModel
 }
 
+@ExperimentalCoroutinesApi
 @Module(includes = [AuthViewModelModule::class])
 @InstallIn(ActivityComponent::class)
 object AuthModule {

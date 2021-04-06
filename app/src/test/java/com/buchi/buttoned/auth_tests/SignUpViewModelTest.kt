@@ -56,14 +56,9 @@ class SignUpViewModelTest {
     fun signUpProcessSetViewStateToValidUser() {
         coroutineScope.runBlockingTest {
             val newUser = User(fullName = "Thomas Muller", username = "tMuller", password = "password123")
-            val testFlow = flow {
-                val user = User("test01", "Thomas Muller", "tMuller", "password123")
-                emit(ResultState.data("User created", SignupViewState(user = user)))
-            }
 
             // Process to test
             viewModel.setStateEvent(SignupStateEvent.SignUp(newUser))
-//            Mockito.`when`(authRepo.signUp(newUser)).thenReturn(testFlow)
 
             // Test confirmation
             Assert.assertEquals("tMuller", viewModel.dataState.first().data?.getContentIfNotHandled()?.user?.username)

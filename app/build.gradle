@@ -5,7 +5,11 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'maven'
 }
+group = 'com.github.SunnyBe'
+
+
 
 android {
     compileSdkVersion 30

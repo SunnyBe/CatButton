@@ -29,4 +29,13 @@ class MockAuthRepository : AuthRepository {
         emit(ResultState.data(null, SignupViewState()))
     }
 
+    override fun updateUser(user: User): Flow<User?> = flow {
+        val mUser = User("test01", "Thomas Muller", "tMuller", "password123")
+        emit(mUser)
+    }
+
+    override fun deleteUser(user: User): Flow<Unit> = flow {
+        emit(Unit)
+    }
+
 }
