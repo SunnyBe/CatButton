@@ -11,6 +11,7 @@ import com.buchi.buttoned.authentication.model.User
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,8 +44,8 @@ class MainDbTest {
             val user =
                 User(fullName = "Thomas Muller", username = "tMuller", password = "password123")
             userDao.insert(user)
-            val byName = userDao.users()
-            assertThat(byName[0], equalTo(user))
+            val byName = userDao.user()
+            assertThat(byName, equalTo(user))
         }
     }
 
@@ -86,8 +87,8 @@ class MainDbTest {
             userDao.delete(user)
 
             // Confirm no user in DB
-            val confirmUser = userDao.users()
-            assert(confirmUser.isEmpty())
+            val confirmUser = userDao.user()
+            Assert.assertNull(confirmUser)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.buchi.buttoned
 
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -22,10 +23,8 @@ import com.buchi.buttoned.utils.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import kotlinx.coroutines.runBlocking
+import org.junit.*
 import org.junit.runner.RunWith
 
 
@@ -44,9 +43,16 @@ class AuthActivityTest {
     @get:Rule(order = 2)
     val intentsTestRule = IntentsTestRule(AuthActivity::class.java)
 
+    lateinit var scenario: ActivityScenario<AuthActivity>
+
     @Before
     fun init() {
         hiltRule.inject()
+    }
+
+    @After
+    fun close() {
+        scenario.close()
     }
 
     // Create test nav controller with navigation graph and return the nav controller instance
@@ -80,7 +86,7 @@ class AuthActivityTest {
         // Enter test full name
         onView(withId(R.id.fullname_entry)).perform(typeText("Thomas Muller"))
         onView(withId(R.id.username_entry)).perform(typeText("tMuller"))
-        onView(withId(R.id.password_entry)).perform(typeText("password123"))
+        onView(withId(R.id.password_entry)).perform(typeText("pass123"))
         // Perform click on submit button
         onView(withId(R.id.register_action)).perform(click())
 
@@ -91,21 +97,29 @@ class AuthActivityTest {
     @Test
     fun testLoginFragment_navigates_to_mainActivity() {
         // make auth nav host controller
-        val navController: TestNavHostController = testAuthNavHostController()
-        launchFragmentInHiltContainer<LoginFragment> {
-            view?.let { v->
-                Navigation.setViewNavController(v, navController)
+        runBlocking {
+            val navController: TestNavHostController = testAuthNavHostController()
+            launchFragmentInHiltContainer<LoginFragment> {
+                view?.let { v ->
+                    Navigation.setViewNavController(v, navController)
+                }
             }
+
+            // Enter test full name
+            onView(withId(R.id.login_username_entry)).perform(
+                typeText("tMuller"),
+                closeSoftKeyboard()
+            )
+            onView(withId(R.id.login_password_entry)).perform(
+                typeText("pass123"),
+                closeSoftKeyboard()
+            )
+            // Perform click on submit button
+            onView(withId(R.id.login_action)).perform(click())
+
+            // Assert activity switch to MainActivity
+            intended(hasComponent(MainActivity::class.java.name))
         }
-
-        // Enter test full name
-        onView(withId(R.id.login_username_entry)).perform(typeText("tMuller"), closeSoftKeyboard())
-        onView(withId(R.id.login_password_entry)).perform(typeText("password123"), closeSoftKeyboard())
-        // Perform click on submit button
-        onView(withId(R.id.login_action)).perform(click())
-
-        // Assert activity switch to MainActivity
-        intended(hasComponent(MainActivity::class.java.name.toString()))
     }
 
     @Test
@@ -121,7 +135,7 @@ class AuthActivityTest {
         // Enter test full name
         onView(withId(R.id.fullname_entry)).perform(typeText("Thomas Muller"), closeSoftKeyboard())
         onView(withId(R.id.username_entry)).perform(typeText("tMuller"), closeSoftKeyboard())
-        onView(withId(R.id.password_entry)).perform(typeText("password123"), closeSoftKeyboard())
+        onView(withId(R.id.password_entry)).perform(typeText("pass123"), closeSoftKeyboard())
         // Perform click on submit button
         onView(withId(R.id.register_action)).perform(click())
 

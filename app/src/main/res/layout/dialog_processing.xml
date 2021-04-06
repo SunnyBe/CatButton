@@ -8,7 +8,7 @@
         android:id="@+id/processing_lottie"
         android:layout_width="@dimen/process_square_size"
         android:layout_height="@dimen/process_square_size"
-        app:lottie_fileName="process_loading.json"
+        app:lottie_fileName="processing.json"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="parent"

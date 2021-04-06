@@ -72,7 +72,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun processDialog(): Dialog {
-        val dialogBinding = DialogProcessingBinding.inflate(layoutInflater, binding.root, false)
+        val dialogBinding = DialogProcessingBinding.inflate(layoutInflater)
         return MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
             .setCancelable(false)
@@ -88,7 +88,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun alertError(cause: String) {
-        val dialogBinding = DialogFailedBinding.inflate(layoutInflater, binding.root, false)
+        val dialogBinding = DialogFailedBinding.inflate(layoutInflater)
         val dialogBuilder = MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
             .setCancelable(false)

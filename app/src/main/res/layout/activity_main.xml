@@ -21,33 +21,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Welcome user" />
 
-    <com.buchi.buttoner.buttons.DynamicButton
+    <com.buchi.buttoner.buttons.CatButton
         android:id="@+id/main_logout_action"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="@color/design_default_color_primary"
-        android:text="Logout lether"
+        android:text="Logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:textSize="20sp"
-        app:icon="@drawable/ic_account"
-        app:iconSize="105dp"
-        app:iconTint="@color/white"
+        app:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.buchi.buttoner.buttons.CatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Button"
-        app:desc_text="Talent Idiot"
-        app:icon="@drawable/ic_account"
-        app:layout_constraintBottom_toTopOf="@+id/main_logout_action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

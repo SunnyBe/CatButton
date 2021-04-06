@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MainViewModel by viewModels { viewModelFactory }
-    private var loggedUser: User? = null
+    var loggedUser: User? = null
     private var fGroundJob: Job? = null
     private var bGroundJob: Job? = null
 
@@ -50,10 +50,12 @@ class MainActivity : AppCompatActivity() {
                     navigateToAuthScreen()
                 }
             } else {
-                Toast.makeText(this, "No user was found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No user was found. Login again", Toast.LENGTH_SHORT).show()
+                navigateToAuthScreen()
                 finish()
             }
         }
+
     }
 
     private fun navigateToAuthScreen() {

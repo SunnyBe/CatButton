@@ -49,7 +49,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun login(userName: String, password: String): Flow<ResultState<LoginViewState>> {
         return flow<ResultState<LoginViewState>> {
-            delay(1500)
             val user = cache.userDao().userByUserNameAndPassword(userName, password)
             if (user!= null) {
                 user.inSession = true
