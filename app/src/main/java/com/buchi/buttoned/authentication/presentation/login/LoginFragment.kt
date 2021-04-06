@@ -53,13 +53,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        Todo Remove unused comment
-//        binding.loginAction.apply {
-//            iconPadding = 25
-//            iconSize = 50
-//            setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_account, null))
-//            setDescription("This is the description", 20f, R.color.white)
-//        }
         binding.loginAction.setOnClickListener {
             val userName = binding.loginUsernameEntry.text.toString().trim()
             val password = binding.loginPasswordEntry.text.toString().trim()
