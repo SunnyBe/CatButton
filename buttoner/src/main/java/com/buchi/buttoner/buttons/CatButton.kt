@@ -1,7 +1,6 @@
 package com.buchi.buttoner.buttons
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.annotation.Px
 import androidx.core.content.res.ResourcesCompat
 import com.buchi.buttoner.R
@@ -36,10 +34,6 @@ class CatButton @JvmOverloads constructor(
     }
 
     // Icon desc
-    @IconGravity
-    private val iconGravity = 0
-    private var iconTintMode: PorterDuff.Mode? = null
-    private var iconTint: ColorStateList? = null
     private var icon: Drawable? = null
 
     @Px
@@ -47,12 +41,6 @@ class CatButton @JvmOverloads constructor(
 
     @Px
     var iconPadding: Int = 0
-    var iconBitmap: Bitmap? = null
-    private var iconStartMargin = 50f
-    private val iconPaint = Paint().apply {
-        isAntiAlias = true
-    }
-
     init {
         val typedArray = context.theme.obtainStyledAttributes(
             attrs,
@@ -64,7 +52,8 @@ class CatButton @JvmOverloads constructor(
             descText = typedArray.getString(R.styleable.DynamicButton_desc_text)
             descTextSize =
                 typedArray.getDimension(R.styleable.DynamicButton_desc_text_size, textSize - 2F)
-            descTextColor = typedArray.getColor(R.styleable.DynamicButton_desc_textColor, Color.BLACK)
+            descTextColor =
+                typedArray.getColor(R.styleable.DynamicButton_desc_textColor, Color.BLACK)
 
             icon = ViewResources.getDrawable(context, typedArray, R.styleable.DynamicButton_icon)
             iconSize = typedArray.getDimensionPixelSize(R.styleable.DynamicButton_iconSize, 16)
@@ -102,8 +91,6 @@ class CatButton @JvmOverloads constructor(
 
         paint.getTextBounds(text.toString(), 0, text.length, textBound)
         val textY = textSize + textBound.bottom + paddingTop
-        val textX = (icon?.intrinsicWidth ?: 0).toFloat() + paddingStart
-
         if (descText != null) {
             canvas?.let {
                 if (descText != null) {
@@ -120,6 +107,13 @@ class CatButton @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the description text that shows below the button text, the textSize and color can be
+     * specified
+     * @param text to set for the description
+     * @param textSizeFloat size of the text description
+     * @param textColorDrawable color for the text description
+     */
     fun setDescription(
         text: String?,
         textSizeFloat: Float? = null,
