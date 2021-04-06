@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.mainLogoutAction.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_account, null))
         loggedUser = intent.getParcelableExtra(Constants.KeyPairs.LOGGED_IN_USER)
         appendUserDetailToView(loggedUser)
 

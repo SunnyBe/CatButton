@@ -6,16 +6,10 @@
     </declare-styleable>
 
     <declare-styleable name="DynamicButton">
-        <!--    Button text params    -->
-        <attr name="button_text" format="string"/>
-        <attr name="textSize" format="dimension"/>
-        <attr name="textColor" format="color"/>
 
         <attr name="desc_text" format="string"/>
         <attr name="desc_text_size" format="dimension"/>
         <attr name="desc_textColor" format="color"/>
-<!--        <attr name="desc_icon" format="reference" />-->
-<!--        <attr name="desc_icon_size" format="dimension" />-->
 
         <!-- Icon drawable to display at the start of this view. -->
         <attr name="icon" format="reference"/>

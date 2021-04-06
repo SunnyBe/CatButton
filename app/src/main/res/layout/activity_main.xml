@@ -21,6 +21,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Welcome user" />
 
+<!--
+    To Use CatButton to set icon and description text use the following values to set the values
+        E.g:
+        To set Icon for the button. use: app:icon="@drawable/ic_logout"
+        To set description text use: app:desc_text="Logs user out"
+        To Set description text color: app:desc_textColor="@color/white"
+-->
+
     <com.buchi.buttoner.buttons.CatButton
         android:id="@+id/main_logout_action"
         android:layout_width="0dp"
@@ -29,10 +37,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="@color/design_default_color_primary"
-        android:text="Logout"
+        android:text="@string/logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:textSize="14sp"
+        app:icon="@drawable/ic_logout"
+        app:desc_textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
